@@ -4,6 +4,7 @@ import ffmpeg from "fluent-ffmpeg";
 import { createWriteStream } from "fs";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import { removeFile } from "../utils/removeFile.js";
 
 const __dirName = dirname(fileURLToPath(import.meta.url));
 
@@ -19,7 +20,10 @@ class OggConverter {
         ffmpeg(input)
           .inputOptions("-t 30")
           .output(outputPath)
-          .on("end", () => resolve(outputPath))
+          .on("end", () => {
+            removeFile(input);
+            resolve(outputPath);
+          })
           .on("error", (error) => reject(error.message))
           .run();
       });
@@ -30,7 +34,7 @@ class OggConverter {
 
   async create(url, fileName) {
     try {
-      const oggPath = resolve(__dirName, "../voices", `${fileName}.ogg`);
+      const oggPath = resolve(__dirName, "../../voices", `${fileName}.ogg`);
       const response = await axios.get(url, { responseType: "stream" });
       return new Promise((resolve) => {
         const stream = createWriteStream(oggPath);

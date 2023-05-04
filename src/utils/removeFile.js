@@ -1,1 +1,9 @@
-export async function removeFile(path) {}
+import { unlink } from "node:fs/promises";
+
+export async function removeFile(path) {
+  try {
+    await unlink(path);
+  } catch (error) {
+    console.log("ERROR while removing file", error.message);
+  }
+}
