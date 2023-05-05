@@ -1,5 +1,6 @@
 #personal
-config/
+config/default.json
+config/production.json
 # Logs
 logs
 *.log
