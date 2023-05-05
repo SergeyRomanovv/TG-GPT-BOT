@@ -14,10 +14,9 @@ class OpenAI {
 
   async transcription(filePath) {
     try {
-      console.log("filePath=========================>", filePath);
       const response = await this.openai.createTranscription(
         createReadStream(filePath),
-        "wisper-1"
+        "whisper-1"
       );
       return response.data.text;
     } catch (error) {
